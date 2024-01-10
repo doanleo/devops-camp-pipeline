@@ -5,7 +5,7 @@ pipeline {
     environment {
         PIPELINE_HASH = sh(script: 'git rev-parse --short HEAD', returnStdout: true).trim()
         HARBOR_REGISTRY = 'registry.dev.afsmtddso.com'
-        HARBOR_PROJECT = 'ldoan-app-pipeline'
+        HARBOR_PROJECT = 'ldoan-harbor-project'
         APP_IMAGE_NAME = 'app'
         DB_IMAGE_NAME = 'db'
     }
@@ -57,10 +57,10 @@ pipeline {
             steps {
                 echo "Building database image"
                 //TODO("Lab 4 - Artifact Management"): build the docker db image
-                withCredentials([usernameColonPassword(credentialsId: '<YOUR CREDENTIAL ID NAME>', variable: 'HARBOR-AUTH')]) {
+                withCredentials([usernameColonPassword(credentialsId: 'ldoan-harbor-auth', variable: 'HARBOR-AUTH')]) {
                     script {
                         sh 'docker build -t $DB_IMAGE_NAME-$COMMIT_HASH -f ./db/Dockerfile ./afs-labs-student'
-                        docker.withRegistry('https://$HARBOR_REGISTRY', '<YOUR CREDENTIAL ID NAME>') {
+                        docker.withRegistry('https://$HARBOR_REGISTRY', 'ldoan-harbor-auth') {
                             sh 'docker tag $DB_IMAGE_NAME-$COMMIT_HASH $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                             sh 'docker push $HARBOR_REGISTRY/$HARBOR_PROJECT/$DB_IMAGE_NAME:$COMMIT_HASH-$PIPELINE_HASH'
                         }
