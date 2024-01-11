@@ -38,7 +38,7 @@ pipeline {
                     }
                 }
             }
-            TODO("Lab 4 - Artifact Management"): clean local docker app image
+            //TODO("Lab 4 - Artifact Management"): clean local docker app image
             post {
                 always {
                     echo "Clean local $APP_IMAGE_NAME image"
