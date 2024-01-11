@@ -62,9 +62,9 @@ pipeline {
                   }
               }
               stage('Security scanning') {
-            steps {
+                steps {
                   withCredentials([usernamePassword(credentialsId: 'ldoan-harbor-auth', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                      echo "Scanning $APP_IMAGE_NAME image"
+                      echo "Scanning $DB_IMAGE_NAME image"
                       sh 'python harbor_scanner.py -i $DB_IMAGE_NAME -r $HARBOR_REGISTRY -p $HARBOR_PROJECT -c ${USERNAME}:${PASSWORD}'
                   }
             }
